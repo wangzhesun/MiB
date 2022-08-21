@@ -11,6 +11,8 @@ from functools import partial, reduce
 import models
 from modules import DeeplabV3
 
+import copy
+
 
 def make_model(opts, classes=None):
     if opts.norm_act == 'iabn_sync':
@@ -26,6 +28,14 @@ def make_model(opts, classes=None):
     if not opts.no_pretrained:
         pretrained_path = f'pretrained/{opts.backbone}_{opts.norm_act}.pth.tar'
         pre_dict = torch.load(pretrained_path, map_location='cpu')
+
+        new_pre_dict = copy.deepcopy(pre_dict)
+        for key in pre_dict['state_dict']:
+            value = new_pre_dict['state_dict'][key]
+            del new_pre_dict['state_dict'][key]
+            new_pre_dict['state_dict'][key[7:]] = value
+        pre_dict = copy.deepcopy(new_pre_dict)
+
         del pre_dict['state_dict']['classifier.fc.weight']
         del pre_dict['state_dict']['classifier.fc.bias']
 

@@ -5,6 +5,7 @@ from torch import distributed
 import torchvision as tv
 import numpy as np
 from .utils import Subset, filter_images, group_images
+import torch
 
 from PIL import Image
 
@@ -110,7 +111,11 @@ class VOCSegmentationIncremental(data.Dataset):
                  labels_old=None,
                  idxs_path=None,
                  masking=True,
-                 overlap=True):
+                 overlap=True,
+                 step=0,
+                 few_shot=False,
+                 num_shot=5,
+                 batch_size=24):
 
         full_voc = VOCSegmentation(root, 'train' if train else 'val', is_aug=True, transform=None)
 
@@ -156,6 +161,35 @@ class VOCSegmentationIncremental(data.Dataset):
                     lambda t: t.apply_(lambda x: self.inverted_order[x] if x in tmp_labels else masking_value))
             else:
                 target_transform = reorder_transform
+
+            ####################################################################################
+            final_file_name = []
+            if few_shot and step > 0 and train:
+                seed = 2022
+                np.random.seed(seed)
+                random.seed(seed)
+                torch.manual_seed(seed)
+                for _ in range(num_shot):
+                    idx = random.choice(idxs)
+                    while True:
+                        if idx not in final_file_name:
+                            final_file_name.append(idx)
+                            break
+                        else:
+                            idx = random.choice(idxs)
+            else:
+                final_file_name = idxs
+
+            idxs = final_file_name
+
+            while len(idxs) < batch_size:
+                if num_shot == 5:
+                    idxs = idxs * 20
+                elif num_shot == 1:
+                    idxs = idxs * 100
+                else:
+                    idxs = idxs * 5
+            ####################################################################################
 
             # make the subset of the dataset
             self.dataset = Subset(full_voc, idxs, transform, target_transform)

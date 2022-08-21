@@ -64,7 +64,9 @@ def get_dataset(opts):
                                 std=[0.229, 0.224, 0.225]),
         ])
 
-    labels, labels_old, path_base = tasks.get_task_labels(opts.dataset, opts.task, opts.step)
+    # labels, labels_old, path_base, num_class = tasks.get_task_labels(opts.dataset, opts.task, opts.step)
+    labels, labels_old, path_base = tasks.get_task_labels(opts.dataset, opts.task,
+                                                                     opts.step)
     labels_cum = labels_old + labels
 
     if opts.dataset == 'voc':
@@ -83,7 +85,8 @@ def get_dataset(opts):
     train_dst = dataset(root=opts.data_root, train=True, transform=train_transform,
                         labels=list(labels), labels_old=list(labels_old),
                         idxs_path=path_base + f"/train-{opts.step}.npy",
-                        masking=not opts.no_mask, overlap=opts.overlap)
+                        masking=not opts.no_mask, overlap=opts.overlap, step=opts.step, few_shot=opts.few_shot,
+                        num_shot=opts.num_shot, batch_size=opts.batch_size)
 
     if not opts.no_cross_val:  # if opts.cross_val:
         train_len = int(0.8 * len(train_dst))
@@ -93,21 +96,29 @@ def get_dataset(opts):
         val_dst = dataset(root=opts.data_root, train=False, transform=val_transform,
                           labels=list(labels), labels_old=list(labels_old),
                           idxs_path=path_base + f"/val-{opts.step}.npy",
-                          masking=not opts.no_mask, overlap=True)
+                          masking=not opts.no_mask, overlap=True, batch_size=opts.batch_size)
 
     image_set = 'train' if opts.val_on_trainset else 'val'
+    ###################################################################################################
     test_dst = dataset(root=opts.data_root, train=opts.val_on_trainset, transform=val_transform,
                        labels=list(labels_cum),
-                       idxs_path=path_base + f"/test_on_{image_set}-{opts.step}.npy")
+                       idxs_path=path_base + f"/test_on_{image_set}-{opts.step}.npy",
+                       batch_size=opts.batch_size)
+    # labels_test = list(range(21))
+    # test_dst = dataset(root=opts.data_root, train=opts.val_on_trainset, transform=val_transform,
+    #                    labels=list(labels_test),
+    #                    idxs_path=path_base + f"/test_on_{image_set}-{opts.step}.npy", batch_size=opts.batch_size)
+    ###################################################################################################
 
     return train_dst, val_dst, test_dst, len(labels_cum)
+    # return train_dst, val_dst, test_dst, num_class
 
 
 def main(opts):
     distributed.init_process_group(backend='nccl', init_method='env://')
     device_id, device = opts.local_rank, torch.device(opts.local_rank)
     rank, world_size = distributed.get_rank(), distributed.get_world_size()
-    torch.cuda.set_device(device_id)
+    torch.cuda.set_device(0)
 
     # Initialize logging
     task_name = f"{opts.task}-{opts.dataset}"
@@ -127,6 +138,41 @@ def main(opts):
 
     # xxx Set up dataloader
     train_dst, val_dst, test_dst, n_classes = get_dataset(opts)
+    ####################################################################################
+    # final_file_name =[]
+    # if opts.few_shot and opts.step > 0:
+    #     seed = opts.random_seed
+    #     np.random.seed(seed)
+    #     random.seed(seed)
+    #     torch.manual_seed(seed)
+    #     for _ in range(opts.num_shot):
+    #         idx = random.choice(train_dst)
+    #         while True:
+    #             print('file name: ')
+    #             print(final_file_name)
+    #             print('idx: ')
+    #             print(idx)
+    #             if idx not in final_file_name:
+    #                 final_file_name.append(idx)
+    #                 break
+    #             else:
+    #                 idx = random.choice(train_dst)
+    # else:
+    #     final_file_name = train_dst
+    #
+    # train_dst = final_file_name
+
+    # while len(train_dst) < opts.batch_size:
+    #     if opts.num_shot == 5:
+    #         train_dst = train_dst * 20
+    #     elif opts.num_shot == 1:
+    #         train_dst = train_dst * 100
+    #     else:
+    #         train_dst = train_dst * 5
+####################################################################################
+
+
+
     # reset the seed, this revert changes in random seed
     random.seed(opts.random_seed)
 
@@ -263,7 +309,7 @@ def main(opts):
                                std=[0.229, 0.224, 0.225])  # de-normalization for original images
 
     TRAIN = not opts.test
-    val_metrics = StreamSegMetrics(n_classes)
+    val_metrics = StreamSegMetrics(n_classes, opts.few_shot)
     results = {}
 
     # check if random is equal here.

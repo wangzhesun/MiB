@@ -35,11 +35,12 @@ class StreamSegMetrics(_StreamMetrics):
     """
     Stream Metrics for Semantic Segmentation Task
     """
-    def __init__(self, n_classes):
+    def __init__(self, n_classes, few_shot=False):
         super().__init__()
         self.n_classes = n_classes
         self.confusion_matrix = np.zeros((n_classes, n_classes))
         self.total_samples = 0
+        self.few_shot = few_shot
 
     def update(self, label_trues, label_preds):
         for lt, lp in zip(label_trues, label_preds):
@@ -63,11 +64,24 @@ class StreamSegMetrics(_StreamMetrics):
         return string
 
     def _fast_hist(self, label_true, label_pred):
+        # print('label_true: ')
+        # print(label_true)
+        # print('label_pred: ')
+        # print(label_pred)
+        #######################################################################################
+        # if self.few_shot:
+        #     mask = ((label_true >= 0) & (label_true < 16)) | (label_true == self.n_classes-1)
+        # else:
+        #     mask = (label_true >= 0) & (label_true < self.n_classes)
         mask = (label_true >= 0) & (label_true < self.n_classes)
+        # print('hist mask: ')
+        # print(mask)
+        #######################################################################################
         hist = np.bincount(
             self.n_classes * label_true[mask].astype(int) + label_pred[mask],
             minlength=self.n_classes ** 2,
         ).reshape(self.n_classes, self.n_classes)
+        # print(hist)
         return hist
 
     def get_results(self):
@@ -80,8 +94,14 @@ class StreamSegMetrics(_StreamMetrics):
         EPS = 1e-6
         hist = self.confusion_matrix
 
+        # print('hist: ')
+        # print(hist)
         gt_sum = hist.sum(axis=1)
+        # print('gt_sum: ')
+        # print(gt_sum)
         mask = (gt_sum != 0)
+        # print('mask: ')
+        # print(mask)
         diag = np.diag(hist)
 
         acc = diag.sum() / hist.sum()
