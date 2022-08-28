@@ -453,7 +453,7 @@ if __name__ == '__main__':
 
     os.makedirs("checkpoints/step", exist_ok=True)
 
-    if opts.step == 0:
+    if opts.step == 0 or not opts.all_step:
         main(opts)
     else:
         base_iou = []
@@ -462,7 +462,7 @@ if __name__ == '__main__':
         seed_list = np.random.randint(0, 99999, size=(opts.num_runs,))
 
         for i in range(opts.num_runs):
-            print('Starting run {}: '.format(i))
+            print('\nStarting run {}: \n'.format(i))
             for j in range(opts.step, 6):
                 opts.step = j
                 opts.random_seed = seed_list[i]
@@ -478,7 +478,11 @@ if __name__ == '__main__':
 
         base_iou = np.array(base_iou)
         novel_iou = np.array(novel_iou)
+        total_mean_iou = np.add(base_iou, novel_iou) / 2
+        max_mean_iou_index = np.where(total_mean_iou == np.amax(total_mean_iou))[0][0]
         print("Results of {} runs in a non-few-shot setting".format(opts.num_runs))
+        print("max Base IoU: {:.4f} max Novel IoU: {:.4f}".format(base_iou[max_mean_iou_index],
+                                                                  novel_iou[max_mean_iou_index]))
 
         print("mean Base IoU: {:.4f} mean Novel IoU: {:.4f}".format(np.mean(base_iou),
                                                                     np.mean(novel_iou)))
