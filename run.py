@@ -429,7 +429,7 @@ def main(opts):
 
     if opts.dataset == 'voc':
         task_dict = tasks.tasks_voc[opts.task]
-    first_cls = len(task_dict[opts.step])
+    first_cls = len(task_dict[0])
 
     print(f"...from 0 to {first_cls - 1} : best/test_before_mIoU : %.6f" % np.mean(
         class_iou[:first_cls]))
@@ -448,12 +448,5 @@ if __name__ == '__main__':
     opts = argparser.modify_command_options(opts)
 
     os.makedirs("checkpoints/step", exist_ok=True)
-
-
-    if opts.dataset == 'voc':
-        task_dict = tasks.tasks_voc[opts.task]
-    first_cls = len(task_dict[opts.step])
-    print('task dict')
-    print(task_dict)
 
     main(opts)
