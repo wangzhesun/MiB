@@ -424,6 +424,10 @@ def main(opts):
 
     logger.close()
 
+    class_iou = list(val_score['Class IoU'].values())
+    print('class iou: ')
+    print(class_iou)
+
 
 if __name__ == '__main__':
     parser = argparser.get_argparser()
