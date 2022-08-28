@@ -425,8 +425,20 @@ def main(opts):
     logger.close()
 
     class_iou = list(val_score['Class IoU'].values())
-    print('class iou: ')
-    print(class_iou)
+    class_acc = list(val_score['Class Acc'].values())
+
+    if opts.dataset == 'voc':
+        task_dict = tasks.tasks_voc[opts.task]
+    first_cls = len(task_dict[opts.step])
+
+    print(f"...from 0 to {first_cls - 1} : best/test_before_mIoU : %.6f" % np.mean(
+        class_iou[:first_cls]))
+    print(f"...from {first_cls} to {len(class_iou) - 1} best/test_after_mIoU : %.6f" % np.mean(
+        class_iou[first_cls:]))
+    print(f"...from 0 to {first_cls - 1} : best/test_before_acc : %.6f" % np.mean(
+        class_acc[:first_cls]))
+    print(f"...from {first_cls} to {len(class_iou) - 1} best/test_after_acc : %.6f" % np.mean(
+        class_acc[first_cls:]))
 
 
 if __name__ == '__main__':
