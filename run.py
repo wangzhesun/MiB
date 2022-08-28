@@ -115,10 +115,11 @@ def get_dataset(opts):
 
 
 def main(opts):
-    distributed.init_process_group(backend='nccl', init_method='env://')
-    device_id, device = opts.local_rank, torch.device(opts.local_rank)
-    rank, world_size = distributed.get_rank(), distributed.get_world_size()
-    torch.cuda.set_device(0)
+    if not opts.all_step or (opts.all_step and opts.step <= 1):
+        distributed.init_process_group(backend='nccl', init_method='env://')
+        device_id, device = opts.local_rank, torch.device(opts.local_rank)
+        rank, world_size = distributed.get_rank(), distributed.get_world_size()
+        torch.cuda.set_device(0)
 
     # Initialize logging
     task_name = f"{opts.task}-{opts.dataset}"
@@ -440,6 +441,8 @@ def main(opts):
     print(f"...from {first_cls} to {len(class_iou) - 1} best/test_after_acc : %.6f" % np.mean(
         class_acc[first_cls:]))
 
+    return np.mean(class_iou[:first_cls]), np.mean(class_iou[first_cls:])
+
 
 if __name__ == '__main__':
     parser = argparser.get_argparser()
@@ -451,4 +454,6 @@ if __name__ == '__main__':
 
     for i in range(opts.step, 6):
         opts.step = i
-        main(opts)
+        base_iou, novel_iou = main(opts)
+        # if i == 5:
+

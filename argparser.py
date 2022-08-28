@@ -197,6 +197,7 @@ def get_argparser():
                         help="path to trained model at previous step. Leave it None if you want to use def path")
     parser.add_argument('--opt_level', type=str, choices=['O0', 'O1', 'O2', 'O3'], default='O0')
     parser.add_argument("--few_shot", type=bool, default=False)
+    parser.add_argument("--all_step", type=bool, default=False)
     parser.add_argument("--num_shot", type=int, default=5)
 
     return parser
