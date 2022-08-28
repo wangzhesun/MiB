@@ -449,4 +449,10 @@ if __name__ == '__main__':
 
     os.makedirs("checkpoints/step", exist_ok=True)
 
+
+    if opts.dataset == 'voc':
+        task_dict = tasks.tasks_voc[opts.task]
+    first_cls = len(task_dict[opts.step])
+    print(first_cls)
+
     main(opts)
