@@ -117,9 +117,10 @@ def get_dataset(opts):
 def main(opts):
     if not opts.all_step or (opts.all_step and opts.step <= 1):
         distributed.init_process_group(backend='nccl', init_method='env://')
-        device_id, device = opts.local_rank, torch.device(opts.local_rank)
-        rank, world_size = distributed.get_rank(), distributed.get_world_size()
-        torch.cuda.set_device(0)
+
+    device_id, device = opts.local_rank, torch.device(opts.local_rank)
+    rank, world_size = distributed.get_rank(), distributed.get_world_size()
+    torch.cuda.set_device(0)
 
     # Initialize logging
     task_name = f"{opts.task}-{opts.dataset}"
@@ -452,8 +453,24 @@ if __name__ == '__main__':
 
     os.makedirs("checkpoints/step", exist_ok=True)
 
+    base_iou = []
+    novel_iou = []
+
     for i in range(opts.step, 6):
         opts.step = i
-        base_iou, novel_iou = main(opts)
-        # if i == 5:
+        new_base, new_novel = main(opts)
+        if i == 5:
+            base_iou.append(new_base)
+            novel_iou.append(new_novel)
 
+    # print("test base iou: ")
+    # print(base_iou)
+    # print("test novel iou: ")
+    # print(novel_iou)
+    #
+    # base_iou = np.array(base_iou)
+    # novel_iou = np.array(novel_iou)
+    # print("Results of {} runs in a non-few-shot setting".format(num_runs))
+    #
+    # print("mean Base IoU: {:.4f} mean Novel IoU: {:.4f}".format(np.mean(base_iou),
+    #                                                             np.mean(novel_iou)))
