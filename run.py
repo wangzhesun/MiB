@@ -453,6 +453,7 @@ if __name__ == '__main__':
     if opts.dataset == 'voc':
         task_dict = tasks.tasks_voc[opts.task]
     first_cls = len(task_dict[opts.step])
-    print(first_cls)
+    print('task dict')
+    print(task_dict)
 
     main(opts)
