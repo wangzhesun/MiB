@@ -449,4 +449,6 @@ if __name__ == '__main__':
 
     os.makedirs("checkpoints/step", exist_ok=True)
 
-    main(opts)
+    for i in range(opts.step, 6):
+        opts.step = i
+        main(opts)
