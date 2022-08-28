@@ -461,7 +461,7 @@ if __name__ == '__main__':
         np.random.seed(1234)
         seed_list = np.random.randint(0, 99999, size=(opts.num_runs,))
 
-        for i in range(opts.num_run):
+        for i in range(opts.num_runs):
             print('Starting run {}: '.format(i))
             for j in range(opts.step, 6):
                 opts.step = j
