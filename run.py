@@ -115,8 +115,8 @@ def get_dataset(opts):
 
 
 def main(opts):
-    if not opts.all_step or opts.step == 0 or (opts.all_step and opts.step == 1):
-        distributed.init_process_group(backend='nccl', init_method='env://')
+    # if not opts.all_step or opts.step == 0 or (opts.all_step and opts.step == 1):
+    #     distributed.init_process_group(backend='nccl', init_method='env://')
 
     device_id, device = opts.local_rank, torch.device(opts.local_rank)
     rank, world_size = distributed.get_rank(), distributed.get_world_size()
@@ -453,6 +453,7 @@ if __name__ == '__main__':
 
     os.makedirs("checkpoints/step", exist_ok=True)
 
+    distributed.init_process_group(backend='nccl', init_method='env://')
     if opts.step == 0 or not opts.all_step:
         main(opts)
     else:
@@ -461,9 +462,11 @@ if __name__ == '__main__':
         np.random.seed(1234)
         seed_list = np.random.randint(0, 99999, size=(opts.num_runs,))
 
+        orig_step = opts.step
         for i in range(opts.num_runs):
             print('\nStarting run {}: \n'.format(i))
-            for j in range(opts.step, 6):
+            for j in range(orig_step, 6):
+                print('\nRun {} Step {}: '.format(i, j))
                 opts.step = j
                 opts.random_seed = seed_list[i]
                 new_base, new_novel = main(opts)
