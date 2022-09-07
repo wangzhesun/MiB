@@ -1,3 +1,16 @@
+tasks_coco = {
+    "split3": {
+        0: [0, 1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15, 17, 18, 19, 21, 22, 23, 25, 26, 27, 29, 30,
+            31, 33, 34, 35, 37, 38, 39, 41, 42, 43, 45, 46, 47, 49, 50, 51, 53, 54, 55, 57, 58, 59,
+            61, 62, 63, 65, 66, 67, 69, 70, 71, 73, 74, 75, 77, 78, 79],
+        1: [4, 8, 12, 16, 20],
+        2: [24, 28, 32, 36, 40],
+        3: [44, 48, 52, 56, 60],
+        4: [64, 68, 72, 76, 80]
+    }
+}
+
+
 tasks_voc = {
     "offline":
         {
@@ -175,6 +188,8 @@ def get_task_labels(dataset, name, step):
         task_dict = tasks_voc[name]
     elif dataset == 'ade':
         task_dict = tasks_ade[name]
+    elif dataset == 'coco':
+        task_dict = tasks_coco[name]
     else:
         raise NotImplementedError
     assert step in task_dict.keys(), f"You should provide a valid step! [{step} is out of range]"
@@ -198,6 +213,8 @@ def get_per_task_classes(dataset, name, step):
         task_dict = tasks_voc[name]
     elif dataset == 'ade':
         task_dict = tasks_ade[name]
+    elif dataset == 'coco':
+        task_dict = tasks_coco[name]
     else:
         raise NotImplementedError
     assert step in task_dict.keys(), f"You should provide a valid step! [{step} is out of range]"

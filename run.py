@@ -13,7 +13,7 @@ import torch
 from torch.utils import data
 from torch import distributed
 
-from dataset import VOCSegmentationIncremental, AdeSegmentationIncremental
+from dataset import VOCSegmentationIncremental, AdeSegmentationIncremental, COCOSegmentationIncremental
 from dataset import transform
 from metrics import StreamSegMetrics
 
@@ -73,6 +73,8 @@ def get_dataset(opts):
         dataset = VOCSegmentationIncremental
     elif opts.dataset == 'ade':
         dataset = AdeSegmentationIncremental
+    elif opts.dataset == 'coco':
+        dataset = COCOSegmentationIncremental
     else:
         raise NotImplementedError
 
@@ -431,6 +433,8 @@ def main(opts):
 
     if opts.dataset == 'voc':
         task_dict = tasks.tasks_voc[opts.task]
+    elif opts.dataset == 'coco':
+        task_dict = tasks.tasks_coco[opts.task]
     first_cls = len(task_dict[0])
 
     print(f"...from 0 to {first_cls - 1} : best/test_before_mIoU : %.6f" % np.mean(
