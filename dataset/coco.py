@@ -181,70 +181,72 @@ class COCOSegmentationIncremental(data.Dataset):
         self.labels = []
         self.labels_old = []
 
-        # Split dataset based on folding. Refer to https://arxiv.org/pdf/1709.03410.pdf
-        # Given fold number, define L_{test}
-        self.labels = [0] + labels
-        print('printing labels old')
-        print(labels_old)
-        self.labels_old = [0] + labels_old
-        self.order = [0] + labels_old + labels
+        if labels is not None:
+            # Split dataset based on folding. Refer to https://arxiv.org/pdf/1709.03410.pdf
+            # Given fold number, define L_{test}
+            labels_old = labels_old if labels_old is not None else []
+            self.labels = [0] + labels
+            print('printing labels old')
+            print(labels_old)
+            self.labels_old = [0] + labels_old
+            self.order = [0] + labels_old + labels
 
-        # take index of images with at least one class in labels and all classes in labels+labels_old+[0,255]
-        if idxs_path is not None and os.path.exists(idxs_path):
-            idxs = np.load(idxs_path).tolist()
-        else:
-            idxs = filter_images(full_coco, labels, labels_old, overlap=overlap)
-            if idxs_path is not None and distributed.get_rank() == 0:
-                np.save(idxs_path, np.array(idxs, dtype=int))
-
-        if train:
-            masking_value = 0
-        else:
-            masking_value = 255
-
-        self.inverted_order = {label: self.order.index(label) for label in self.order}
-        self.inverted_order[255] = masking_value
-
-        reorder_transform = torchvision.transforms.Lambda(
-            lambda t: t.apply_(
-                lambda x: self.inverted_order[x] if x in self.inverted_order else masking_value))
-
-        if masking:
-            tmp_labels = self.labels + [255]
-            target_transform = torchvision.transforms.Lambda(
-                lambda t: t.apply_(
-                    lambda x: self.inverted_order[x] if x in tmp_labels else masking_value))
-        else:
-            target_transform = reorder_transform
-
-        ####################################################################################
-        final_file_name = []
-        if few_shot and step > 0 and train:
-            seed = 2022
-            np.random.seed(seed)
-            random.seed(seed)
-            torch.manual_seed(seed)
-            for _ in range(num_shot):
-                idx = random.choice(idxs)
-                while True:
-                    if idx not in final_file_name:
-                        final_file_name.append(idx)
-                        break
-                    else:
-                        idx = random.choice(idxs)
-        else:
-            final_file_name = idxs
-
-        idxs = final_file_name
-
-        while len(idxs) < batch_size:
-            if num_shot == 5:
-                idxs = idxs * 20
-            elif num_shot == 1:
-                idxs = idxs * 100
+            # take index of images with at least one class in labels and all classes in labels+labels_old+[0,255]
+            if idxs_path is not None and os.path.exists(idxs_path):
+                idxs = np.load(idxs_path).tolist()
             else:
-                idxs = idxs * 5
-        ####################################################################################
+                idxs = filter_images(full_coco, labels, labels_old, overlap=overlap)
+                if idxs_path is not None and distributed.get_rank() == 0:
+                    np.save(idxs_path, np.array(idxs, dtype=int))
+
+            if train:
+                masking_value = 0
+            else:
+                masking_value = 255
+
+            self.inverted_order = {label: self.order.index(label) for label in self.order}
+            self.inverted_order[255] = masking_value
+
+            reorder_transform = torchvision.transforms.Lambda(
+                lambda t: t.apply_(
+                    lambda x: self.inverted_order[x] if x in self.inverted_order else masking_value))
+
+            if masking:
+                tmp_labels = self.labels + [255]
+                target_transform = torchvision.transforms.Lambda(
+                    lambda t: t.apply_(
+                        lambda x: self.inverted_order[x] if x in tmp_labels else masking_value))
+            else:
+                target_transform = reorder_transform
+
+            ####################################################################################
+            final_file_name = []
+            if few_shot and step > 0 and train:
+                seed = 2022
+                np.random.seed(seed)
+                random.seed(seed)
+                torch.manual_seed(seed)
+                for _ in range(num_shot):
+                    idx = random.choice(idxs)
+                    while True:
+                        if idx not in final_file_name:
+                            final_file_name.append(idx)
+                            break
+                        else:
+                            idx = random.choice(idxs)
+            else:
+                final_file_name = idxs
+
+            idxs = final_file_name
+
+            while len(idxs) < batch_size:
+                if num_shot == 5:
+                    idxs = idxs * 20
+                elif num_shot == 1:
+                    idxs = idxs * 100
+                else:
+                    idxs = idxs * 5
+            ####################################################################################
 
             # make the subset of the dataset
             self.dataset = Subset(full_coco, idxs, transform, target_transform)
