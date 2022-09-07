@@ -37,11 +37,6 @@ class COCOSegmentation(data.Dataset):
         self.transform = transform
 
         self.image_set = image_set
-        self.annotation_path = os.path.join(root, 'annotations',
-                                            'instances_{}2017.json'.format(image_set))
-        assert os.path.exists(
-                self.annotation_path), "SegmentationClassAug not found"
-
 
         base_dir = "COCO2017"
         coco_root = os.path.join(self.root, base_dir)
@@ -49,7 +44,12 @@ class COCOSegmentation(data.Dataset):
             raise RuntimeError('Dataset not found or corrupted.' +
                                ' You can use download=True to download it')
 
-        self.img_dir = os.path.join(self.root, base_dir, '{}2017'.format(image_set))
+        self.annotation_path = os.path.join(coco_root, 'annotations',
+                                            'instances_{}2017.json'.format(image_set))
+        assert os.path.exists(
+            self.annotation_path), "SegmentationClassAug not found"
+
+        self.img_dir = os.path.join(coco_root, '{}2017'.format(image_set))
         # splits_dir = os.path.join(voc_root, 'splits')
         self.coco = COCO(self.annotation_path)
         self.img_ids = list(self.coco.imgs.keys())
