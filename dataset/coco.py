@@ -186,8 +186,6 @@ class COCOSegmentationIncremental(data.Dataset):
             # Given fold number, define L_{test}
             labels_old = labels_old if labels_old is not None else []
             self.labels = [0] + labels
-            print('printing labels old')
-            print(labels_old)
             self.labels_old = [0] + labels_old
             self.order = [0] + labels_old + labels
 
