@@ -69,6 +69,9 @@ def get_dataset(opts):
                                                                      opts.step)
     labels_cum = labels_old + labels
 
+    print('printing labels old in run.py')
+    print(labels_old)
+
     if opts.dataset == 'voc':
         dataset = VOCSegmentationIncremental
     elif opts.dataset == 'ade':
