@@ -150,7 +150,7 @@ class COCOSegmentation(data.Dataset):
 ###############################################################################
 
 
-class VOCSegmentationIncremental(data.Dataset):
+class COCOSegmentationIncremental(data.Dataset):
     def __init__(self,
                  root,
                  train=True,
