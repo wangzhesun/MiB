@@ -184,6 +184,8 @@ class COCOSegmentationIncremental(data.Dataset):
         # Split dataset based on folding. Refer to https://arxiv.org/pdf/1709.03410.pdf
         # Given fold number, define L_{test}
         self.labels = [0] + labels
+        print('printing labels old')
+        print(labels_old)
         self.labels_old = [0] + labels_old
         self.order = [0] + labels_old + labels
 
