@@ -180,7 +180,7 @@ tasks_ade = {
 
 
 def get_task_list():
-    return list(tasks_voc.keys()) + list(tasks_ade.keys())
+    return list(tasks_coco.keys()) + list(tasks_voc.keys()) + list(tasks_ade.keys())
 
 
 def get_task_labels(dataset, name, step):
