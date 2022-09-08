@@ -81,5 +81,5 @@ class base_set(torch.utils.data.Dataset):
         return JointCompose(transforms_ops_list)
 
     def _get_dataset_normalizer(self, transforms_cfg):
-        return transforms.Normalize(mean=transforms_cfg['TRANSFORMS_DETAILS']['NORMALIZE.mean'],
-                                    std=transforms_cfg['TRANSFORMS_DETAILS']['NORMALIZE.sd'])
+        return transforms.Normalize(mean=transforms_cfg['TRANSFORMS_DETAILS']['NORMALIZE']['mean'],
+                                    std=transforms_cfg['TRANSFORMS_DETAILS']['NORMALIZE']['sd'])
