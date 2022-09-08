@@ -65,3 +65,6 @@ class COCOSegmentationIncremental(data.Dataset):
     def __getitem__(self, index):
         return self.dataset[index]
 
+    def __len__(self):
+        return len(self.dataset)
+
