@@ -72,3 +72,7 @@ class COCOSegmentationIncremental(data.Dataset):
     def __len__(self):
         return len(self.dataset)
 
+    @staticmethod
+    def __strip_zero(labels):
+        while 0 in labels:
+            labels.remove(0)

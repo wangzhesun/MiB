@@ -157,6 +157,10 @@ class Trainer:
                     logger.add_scalar('Loss', interval_loss, x)
                 interval_loss = 0.0
 
+##############################################################################
+            torch.cuda.empty_cache()
+##############################################################################
+
         # collect statistics from multiple processes
         epoch_loss = torch.tensor(epoch_loss).to(self.device)
         reg_loss = torch.tensor(reg_loss).to(self.device)
