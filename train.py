@@ -87,6 +87,7 @@ class Trainer:
 
         model.train()
         for cur_step, (images, labels) in enumerate(train_loader):
+            torch.cuda.empty_cache()
 
             images = images.to(device, dtype=torch.float32)
             labels = labels.to(device, dtype=torch.long)
@@ -158,7 +159,7 @@ class Trainer:
                 interval_loss = 0.0
 
 ##############################################################################
-            torch.cuda.empty_cache()
+            # torch.cuda.empty_cache()
 ##############################################################################
 
         # collect statistics from multiple processes
