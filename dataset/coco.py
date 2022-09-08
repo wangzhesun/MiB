@@ -63,8 +63,12 @@ class COCOSegmentationIncremental(data.Dataset):
                 ds = COCO20iReader(COCO_PATH, folding, False, exclude_novel=False)
                 self.dataset = base_set(ds, "test", cfg)
         else:
-            ds = COCOSeg(COCO_PATH, True)
-            self.dataset = base_set(ds, "test", cfg) # Use test config to keep original scale of the image.
+            if train:
+                ds = COCOSeg(COCO_PATH, True)
+                self.dataset = base_set(ds, "test", cfg) # Use test config to keep original scale of the image.
+            else:
+                ds = COCOSeg(COCO_PATH, False)
+                self.dataset = base_set(ds, "test", cfg)
 
     def __getitem__(self, index):
         return self.dataset[index]
