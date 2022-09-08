@@ -10,7 +10,7 @@ import utils
 from .baseset import base_set
 from .coco_base import COCOSeg
 
-COCO_PATH = os.path.join(utils.get_dataset_root(), "COCO2017")
+# COCO_PATH = os.path.join(utils.get_dataset_root(), "COCO2017")
 
 novel_dict = {
     0: [1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61, 65, 69, 73, 77],
@@ -184,39 +184,39 @@ class PartialCOCOReader(torchvision.datasets.vision.VisionDataset):
         img, target_tensor = self.vanilla_ds[self.subset_idx[idx]]
         return img, target_tensor
 
-def get_train_set(cfg):
-    folding = cfg.DATASET.COCO20i.folding
-    ds = COCO20iReader(COCO_PATH, folding, True, exclude_novel=True)
-    return base_set(ds, "train", cfg)
-
-def get_unaug_train_set(cfg):
-    folding = cfg.DATASET.COCO20i.folding
-    ds = COCO20iReader(COCO_PATH, folding, True, exclude_novel=True)
-    return base_set(ds, "test", cfg)
-
-def get_train_set_vanilla_label(cfg):
-    folding = cfg.DATASET.COCO20i.folding
-    ds = COCO20iReader(COCO_PATH, folding, True, exclude_novel=True, vanilla_label=True)
-    return base_set(ds, "train", cfg)
-
-def get_vanilla_train_set_vanilla_label(cfg):
-    folding = cfg.DATASET.COCO20i.folding
-    ds = COCO20iReader(COCO_PATH, folding, True, exclude_novel=True, vanilla_label=True)
-    return base_set(ds, "test", cfg)
-
-def get_val_set(cfg):
-    folding = cfg.DATASET.COCO20i.folding
-    ds = COCO20iReader(COCO_PATH, folding, False, exclude_novel=False)
-    return base_set(ds, "test", cfg)
-
-def get_continual_vanilla_train_set(cfg):
-    ds = COCOSeg(COCO_PATH, True)
-    return base_set(ds, "test", cfg) # Use test config to keep original scale of the image.
-
-def get_continual_aug_train_set(cfg):
-    ds = COCOSeg(COCO_PATH, True)
-    return base_set(ds, "train", cfg)
-
-def get_continual_test_set(cfg):
-    ds = COCOSeg(COCO_PATH, False)
-    return base_set(ds, "test", cfg)
+# def get_train_set(cfg):
+#     folding = cfg.DATASET.COCO20i.folding
+#     ds = COCO20iReader(COCO_PATH, folding, True, exclude_novel=True)
+#     return base_set(ds, "train", cfg)
+# 
+# def get_unaug_train_set(cfg):
+#     folding = cfg.DATASET.COCO20i.folding
+#     ds = COCO20iReader(COCO_PATH, folding, True, exclude_novel=True)
+#     return base_set(ds, "test", cfg)
+#
+# def get_train_set_vanilla_label(cfg):
+#     folding = cfg.DATASET.COCO20i.folding
+#     ds = COCO20iReader(COCO_PATH, folding, True, exclude_novel=True, vanilla_label=True)
+#     return base_set(ds, "train", cfg)
+#
+# def get_vanilla_train_set_vanilla_label(cfg):
+#     folding = cfg.DATASET.COCO20i.folding
+#     ds = COCO20iReader(COCO_PATH, folding, True, exclude_novel=True, vanilla_label=True)
+#     return base_set(ds, "test", cfg)
+#
+# def get_val_set(cfg):
+#     folding = cfg.DATASET.COCO20i.folding
+#     ds = COCO20iReader(COCO_PATH, folding, False, exclude_novel=False)
+#     return base_set(ds, "test", cfg)
+#
+# def get_continual_vanilla_train_set(cfg):
+#     ds = COCOSeg(COCO_PATH, True)
+#     return base_set(ds, "test", cfg) # Use test config to keep original scale of the image.
+#
+# def get_continual_aug_train_set(cfg):
+#     ds = COCOSeg(COCO_PATH, True)
+#     return base_set(ds, "train", cfg)
+#
+# def get_continual_test_set(cfg):
+#     ds = COCOSeg(COCO_PATH, False)
+#     return base_set(ds, "test", cfg)
