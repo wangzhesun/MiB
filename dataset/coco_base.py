@@ -414,7 +414,7 @@ from pycocotools.coco import COCO
 import utils
 from .baseset import base_set
 
-COCO_PATH = os.path.join(utils.get_dataset_root(), "COCO2017")
+# COCO_PATH = os.path.join(utils.get_dataset_root(), "COCO2017")
 
 
 # 2017 train images normalization constants
@@ -546,11 +546,11 @@ class COCOSeg(datasets.vision.VisionDataset):
         return len(self.coco.imgs)
 
 
-def get_train_set(cfg):
-    ds = COCOSeg(COCO_PATH, True)
-    return base_set(ds, "train", cfg)
-
-
-def get_val_set(cfg):
-    ds = COCOSeg(COCO_PATH, False)
-    return base_set(ds, "test", cfg)
+# def get_train_set(cfg):
+#     ds = COCOSeg(COCO_PATH, True)
+#     return base_set(ds, "train", cfg)
+#
+#
+# def get_val_set(cfg):
+#     ds = COCOSeg(COCO_PATH, False)
+#     return base_set(ds, "test", cfg)
