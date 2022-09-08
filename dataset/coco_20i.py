@@ -188,7 +188,7 @@ class PartialCOCOReader(torchvision.datasets.vision.VisionDataset):
 #     folding = cfg.DATASET.COCO20i.folding
 #     ds = COCO20iReader(COCO_PATH, folding, True, exclude_novel=True)
 #     return base_set(ds, "train", cfg)
-# 
+#
 # def get_unaug_train_set(cfg):
 #     folding = cfg.DATASET.COCO20i.folding
 #     ds = COCO20iReader(COCO_PATH, folding, True, exclude_novel=True)
