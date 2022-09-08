@@ -22,9 +22,18 @@ def dispatcher(transforms_cfg):
             continue
         callable_op = my_transforms_registry[trans_name](transforms_cfg)
         op_list.append(callable_op)
-    for trans_name in transforms_cfg['joint_transforms']:
-        if trans_name == "none":
-            continue
-        callable_op = joint_transforms_registry[trans_name](transforms_cfg)
-        joint_op_list.append(callable_op)
+    ###########################################
+    # for trans_name in transforms_cfg['joint_transforms']:
+    #     if trans_name == "none":
+    #         continue
+    #     callable_op = joint_transforms_registry[trans_name](transforms_cfg)
+    #     joint_op_list.append(callable_op)
+
+    if 'joint_transforms' in transforms_cfg:
+        for trans_name in transforms_cfg['joint_transforms']:
+            if trans_name == "none":
+                continue
+            callable_op = joint_transforms_registry[trans_name](transforms_cfg)
+            joint_op_list.append(callable_op)
+    ###################################################################
     return op_list, joint_op_list
