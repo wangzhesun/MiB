@@ -9,9 +9,9 @@ import torch
 
 from PIL import Image
 
-from coco_base import COCOSeg
-from coco_20i import COCO20iReader
-from baseset import base_set
+from .coco_base import COCOSeg
+from .coco_20i import COCO20iReader
+from .baseset import base_set
 
 cfg = {'DATASET': {
            'TRANSFORM': {
