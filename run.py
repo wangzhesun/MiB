@@ -190,8 +190,10 @@ def main(opts):
 
 
     ##################################################################################
-    print('/n printing index 0 train set: ')
+    print('\n printing index 0 train image: ')
     print(train_dst[0][0].size())
+    print('\n printing index 0 train label: ')
+    print(train_dst[0][1].size())
     ##################################################################################
 
 
