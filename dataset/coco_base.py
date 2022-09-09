@@ -445,10 +445,12 @@ class COCOSeg(datasets.vision.VisionDataset):
         # Given a class idx (1-80), self.instance_class_map gives the list of images that contain
         # this class idx
         class_map_dir = os.path.join(root, 'instance_seg_class_map', split_name)
+        print('coco_base.py 1')
         if not os.path.exists(class_map_dir):
             # Merge VOC and SBD datasets and create auxiliary files
             try:
                 self.create_coco_class_map(class_map_dir)
+                print('coco_base.py 2')
             except (Exception, KeyboardInterrupt) as e:
                 # Dataset creation fail for some reason...
                 shutil.rmtree(class_map_dir)
@@ -480,23 +482,10 @@ class COCOSeg(datasets.vision.VisionDataset):
             img_id = self.img_ids[i]
             mask = self._get_mask(img_id)
             contained_labels = torch.unique(mask)
-            ############################################
-            # print('printing contained labels: ')
-            # print(contained_labels)
-            ############################################
             for c in contained_labels:
-                ##################################3333
-                # if c not in range(0,81):
-                #     continue
-                ######################################
                 c = int(c)
                 if c == 0 or c == -1:
                     continue  # background or ignore_mask
-                ###################################################################
-                # print('printing c and i: ')
-                # print(c)
-                # print(i)
-                ####################################################################
                 instance_class_map[c].append(str(i))  # use string to format integer to write to txt
 
         for c in range(1, 81):
