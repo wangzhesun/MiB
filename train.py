@@ -130,11 +130,12 @@ class Trainer:
             # xxx first backprop of previous loss (compute the gradients for regularization methods)
             loss_tot = loss + lkd + lde + l_icarl
 
-            # time.sleep(100)
+
 
             print(count)
             count += 1
 
+            time.sleep(50)
 
             with amp.scale_loss(loss_tot, optim) as scaled_loss:
                 scaled_loss.backward()
