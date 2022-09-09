@@ -429,7 +429,10 @@ class COCOSeg(datasets.vision.VisionDataset):
         self.annotation_path = os.path.join(root, 'annotations',
                                             'instances_{}2017.json'.format(split_name))
         self.img_dir = os.path.join(root, '{}2017'.format(split_name))
+        print('coco_base.py 1')
         self.coco = COCO(self.annotation_path)
+
+        print('coco_base.py 2')
         self.img_ids = list(self.coco.imgs.keys())
 
         # COCO class
@@ -445,12 +448,10 @@ class COCOSeg(datasets.vision.VisionDataset):
         # Given a class idx (1-80), self.instance_class_map gives the list of images that contain
         # this class idx
         class_map_dir = os.path.join(root, 'instance_seg_class_map', split_name)
-        print('coco_base.py 1')
         if not os.path.exists(class_map_dir):
             # Merge VOC and SBD datasets and create auxiliary files
             try:
                 self.create_coco_class_map(class_map_dir)
-                print('coco_base.py 2')
             except (Exception, KeyboardInterrupt) as e:
                 # Dataset creation fail for some reason...
                 shutil.rmtree(class_map_dir)
