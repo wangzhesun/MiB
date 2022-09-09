@@ -1,6 +1,6 @@
 # base learning step
 DATA_ROOT=../data
-BATCH=24
+BATCH=12 #24
 DATASET=coco #voc
 NAME=MiB
 TASK=split3 #15-1-split0
@@ -12,7 +12,7 @@ NUMSHOT=5
 NUMRUN=5 #5
 
 
-python -m torch.distributed.launch --nproc_per_node=1 run.py --data_root ${DATA_ROOT}  \
+python -m torch.distributed.launch --nproc_per_node=2 run.py --data_root ${DATA_ROOT}  \
        --batch_size ${BATCH} --dataset ${DATASET} --name ${NAME} --task ${TASK} --step ${STEP} \
        --lr ${LR} --epochs ${EPOCH} --method ${METHOD}
 
