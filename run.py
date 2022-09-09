@@ -186,6 +186,20 @@ def main(opts):
     val_loader = data.DataLoader(val_dst, batch_size=opts.batch_size if opts.crop_val else 1,
                                  sampler=DistributedSampler(val_dst, num_replicas=world_size, rank=rank),
                                  num_workers=opts.num_workers)
+
+
+
+    ##################################################################################
+    print('/n printing index 0 train set: ')
+    print(train_dst.size())
+    ##################################################################################
+
+
+
+
+
+
+
     logger.info(f"Dataset: {opts.dataset}, Train set: {len(train_dst)}, Val set: {len(val_dst)},"
                 f" Test set: {len(test_dst)}, n_classes {n_classes}")
     logger.info(f"Total batch size is {opts.batch_size * world_size}")
