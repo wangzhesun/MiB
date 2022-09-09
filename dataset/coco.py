@@ -62,6 +62,7 @@ class COCOSegmentationIncremental(data.Dataset):
             else:
                 ds = COCO20iReader(COCO_PATH, folding, False, exclude_novel=False)
                 self.dataset = base_set(ds, "test", cfg)
+            print('hahahahahaha')
         else:
             if train:
                 ds = COCOSeg(COCO_PATH, True)
