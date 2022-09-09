@@ -87,10 +87,6 @@ class Trainer:
 
         model.train()
 
-        ################
-        count = 1
-        ##############
-
         for cur_step, (images, labels) in enumerate(train_loader):
             torch.cuda.empty_cache()
 
@@ -132,13 +128,12 @@ class Trainer:
 
 
 
-            print(count)
-            count += 1
-
-            time.sleep(0.1)
+            print(1)
 
             with amp.scale_loss(loss_tot, optim) as scaled_loss:
                 scaled_loss.backward()
+
+            print(2)
 
             # xxx Regularizer (EWC, RW, PI)
             if self.regularizer_flag:
