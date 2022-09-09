@@ -192,12 +192,14 @@ def main(opts):
     ##################################################################################
     print('\n printing max and min index 5 train image: ')
     # print(train_dst[0][0].size())
-    print(torch.max(train_dst[5][0]))
-    print(torch.min(train_dst[5][0]))
+    # print(torch.max(train_dst[5][0]))
+    # print(torch.min(train_dst[5][0]))
+    print(train_dst[0][0].is_cuda)
     print('\n printing max and min index 5 train label: ')
     # print(train_dst[0][1].size())
-    print(torch.max(train_dst[5][1]))
-    print(torch.min(train_dst[5][1]))
+    # print(torch.max(train_dst[5][1]))
+    # print(torch.min(train_dst[5][1]))
+    print(train_dst[0][1].is_cuda)
     ##################################################################################
 
 
