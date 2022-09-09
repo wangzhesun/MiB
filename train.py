@@ -86,6 +86,11 @@ class Trainer:
         train_loader.sampler.set_epoch(cur_epoch)
 
         model.train()
+
+        ################
+        count = 1
+        ##############
+
         for cur_step, (images, labels) in enumerate(train_loader):
             torch.cuda.empty_cache()
 
@@ -125,7 +130,12 @@ class Trainer:
             # xxx first backprop of previous loss (compute the gradients for regularization methods)
             loss_tot = loss + lkd + lde + l_icarl
 
-            time.sleep(100)
+            # time.sleep(100)
+
+            print(count)
+            count += 1
+
+
             with amp.scale_loss(loss_tot, optim) as scaled_loss:
                 scaled_loss.backward()
 
