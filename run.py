@@ -190,10 +190,14 @@ def main(opts):
 
 
     ##################################################################################
-    print('\n printing index 0 train image: ')
-    print(train_dst[0][0].size())
-    print('\n printing index 0 train label: ')
-    print(train_dst[0][1].size())
+    print('\n printing max and min index 0 train image: ')
+    # print(train_dst[0][0].size())
+    print(max(train_dst[0][0]))
+    print(min(train_dst[0][0]))
+    print('\n printing max and min index 0 train label: ')
+    # print(train_dst[0][1].size())
+    print(max(train_dst[0][1]))
+    print(min(train_dst[0][1]))
     ##################################################################################
 
 
