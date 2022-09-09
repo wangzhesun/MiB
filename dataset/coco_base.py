@@ -429,10 +429,8 @@ class COCOSeg(datasets.vision.VisionDataset):
         self.annotation_path = os.path.join(root, 'annotations',
                                             'instances_{}2017.json'.format(split_name))
         self.img_dir = os.path.join(root, '{}2017'.format(split_name))
-        print('coco_base.py 1')
         self.coco = COCO(self.annotation_path)
 
-        print('coco_base.py 2')
         self.img_ids = list(self.coco.imgs.keys())
 
         # COCO class
