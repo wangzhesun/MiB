@@ -135,7 +135,7 @@ class Trainer:
             print(count)
             count += 1
 
-            time.sleep(50)
+            time.sleep(0.1)
 
             with amp.scale_loss(loss_tot, optim) as scaled_loss:
                 scaled_loss.backward()
