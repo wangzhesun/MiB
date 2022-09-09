@@ -93,16 +93,16 @@ class Trainer:
             images = images.to(device, dtype=torch.float32)
             labels = labels.to(device, dtype=torch.long)
 
-            print('\n printing max and min train image: ')
-            print(images.size())
-            print(torch.max(images))
-            print(torch.min(images))
-            print(images.is_cuda)
-            print('\n printing max and min train label: ')
-            print(labels.size())
-            print(torch.max(labels))
-            print(torch.min(labels))
-            print(labels.is_cuda)
+            # print('\n printing max and min train image: ')
+            # print(images.size())
+            # print(torch.max(images))
+            # print(torch.min(images))
+            # print(images.is_cuda)
+            # print('\n printing max and min train label: ')
+            # print(labels.size())
+            # print(torch.max(labels))
+            # print(torch.min(labels))
+            # print(labels.is_cuda)
 
             if (self.lde_flag or self.lkd_flag or self.icarl_dist_flag) and self.model_old is not None:
                 with torch.no_grad():
