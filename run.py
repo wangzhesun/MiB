@@ -120,8 +120,6 @@ def main(opts):
     # if not opts.all_step or opts.step == 0 or (opts.all_step and opts.step == 1):
     #     distributed.init_process_group(backend='nccl', init_method='env://')
 
-    os.environ['CUDA_LAUNCH_BLOCKING'] ='1'
-
     device_id, device = opts.local_rank, torch.device(opts.local_rank)
     rank, world_size = distributed.get_rank(), distributed.get_world_size()
     torch.cuda.set_device(0)
