@@ -7,7 +7,7 @@ from functools import reduce
 from utils.loss import KnowledgeDistillationLoss, BCEWithLogitsLossWithIgnoreIndex, \
     UnbiasedKnowledgeDistillationLoss, UnbiasedCrossEntropy, IcarlLoss
 from utils import get_regularizer
-
+import time
 
 class Trainer:
     def __init__(self, model, model_old, device, opts, trainer_state=None, classes=None):
@@ -125,6 +125,7 @@ class Trainer:
             # xxx first backprop of previous loss (compute the gradients for regularization methods)
             loss_tot = loss + lkd + lde + l_icarl
 
+            time.sleep(100)
             with amp.scale_loss(loss_tot, optim) as scaled_loss:
                 scaled_loss.backward()
 
