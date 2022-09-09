@@ -127,6 +127,8 @@ class Trainer:
             loss_tot = loss + lkd + lde + l_icarl
 
             with amp.scale_loss(loss_tot, optim) as scaled_loss:
+                print('printint loss property: ')
+                print(scaled_loss.is_cuda)
                 scaled_loss.backward()
 
             # xxx Regularizer (EWC, RW, PI)
