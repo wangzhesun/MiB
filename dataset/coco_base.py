@@ -521,7 +521,9 @@ class COCOSeg(datasets.vision.VisionDataset):
         raw_lbl[raw_lbl > 91] = 0  # STUFF classes are mapped to background
         for d_idx in deleted_idx:
             raw_lbl[raw_lbl > d_idx] -= 1
-        raw_lbl[ignore_idx] = -1
+        ##################################################
+        raw_lbl[ignore_idx] = 0
+        ################################################
         return torch.tensor(raw_lbl)
 
     def get_class_map(self, class_id):
