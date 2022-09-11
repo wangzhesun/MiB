@@ -1,9 +1,9 @@
 # base learning step
 DATA_ROOT=../data
 BATCH=16 #24
-DATASET=voc
+DATASET=coco #voc
 NAME=MiB
-TASK=15-1-split0
+TASK=split3 #15-1-split0
 STEP=0
 LR=0.01
 EPOCH=30 #30
