@@ -88,7 +88,7 @@ def get_dataset(opts):
                         labels=list(labels), labels_old=list(labels_old),
                         idxs_path=path_base + f"/train-{opts.step}.npy",
                         masking=not opts.no_mask, overlap=opts.overlap, step=opts.step, few_shot=opts.few_shot,
-                        num_shot=opts.num_shot, batch_size=opts.batch_size)
+                        num_shot=opts.num_shot, batch_size=opts.batch_size, task=opts.task)
 
     if not opts.no_cross_val:  # if opts.cross_val:
         train_len = int(0.8 * len(train_dst))

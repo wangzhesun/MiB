@@ -12,6 +12,7 @@ from PIL import Image
 from .coco_base import COCOSeg
 from .coco_20i import COCO20iReader
 from .baseset import base_set
+import tasks
 
 cfg = {'DATASET': {
            'TRANSFORM': {
@@ -50,10 +51,12 @@ class COCOSegmentationIncremental(data.Dataset):
                  step=0,
                  few_shot=False,
                  num_shot=5,
-                 batch_size=24):
+                 batch_size=24,
+                 task='split3'):
 
         COCO_PATH = os.path.join(root, "COCO2017")
         folding = 3
+        labels, labels_old, path_base = tasks.get_task_labels('coco', name=task, step=step)
 
         if step == 0:
             if train:
@@ -65,7 +68,46 @@ class COCOSegmentationIncremental(data.Dataset):
         else:
             if train:
                 ds = COCOSeg(COCO_PATH, True)
-                self.dataset = base_set(ds, "test", cfg) # Use test config to keep original scale of the image.
+                dataset = base_set(ds, "test", cfg)  # Use test config to keep original scale of the image.
+
+                #######################################
+                idxs = list(range(len(ds)))
+                final_file_name = []
+                if few_shot:
+                    seed = 2022
+                    np.random.seed(seed)
+                    random.seed(seed)
+                    torch.manual_seed(seed)
+                    for k in labels:
+                        for _ in range(num_shot):
+                            idx = random.choice(idxs)
+                            while True:
+                                novel_img_chw, mask_hw = dataset[idx]
+                                pixel_sum = torch.sum(mask_hw == k)
+                                # If the selected sample is bad (more than 1px) and has not been selected,
+                                # we choose the example.
+                                if pixel_sum > 1 and idx not in final_file_name:
+                                    final_file_name.append(idx)
+                                    break
+                                else:
+                                    idx = random.choice(idxs)
+                    assert len(final_file_name) == num_shot*len(labels)
+                else:
+                    final_file_name = idxs
+
+                idxs = final_file_name
+
+                while len(idxs) < batch_size:
+                    if num_shot == 5:
+                        idxs = idxs * 20
+                    elif num_shot == 1:
+                        idxs = idxs * 100
+                    else:
+                        idxs = idxs * 5
+
+                self.dataset = Subset(dataset, idxs)
+                #######################################
+
             else:
                 ds = COCOSeg(COCO_PATH, False)
                 self.dataset = base_set(ds, "test", cfg)

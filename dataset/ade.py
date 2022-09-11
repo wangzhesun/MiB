@@ -211,7 +211,8 @@ class AdeSegmentationIncremental(data.Dataset):
                  labels_old=None,
                  idxs_path=None,
                  masking=True,
-                 overlap=True):
+                 overlap=True,
+                 task='100-50'):
 
         full_data = AdeSegmentation(root, train)
 
