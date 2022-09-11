@@ -98,13 +98,13 @@ class Trainer:
             print(images.size())
             print(torch.max(images))
             print(torch.min(images))
-            print(type(torch.max(images)))
+            print(torch.max(images).dtype)
             print(images.is_cuda)
             print('\n printing max and min train label: ')
             print(labels.size())
             print(torch.max(labels))
             print(torch.min(labels))
-            print(type(torch.max(labels)))
+            print(torch.max(labels).dtype)
             print(labels.is_cuda)
             #################################################################3
 
