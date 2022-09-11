@@ -139,9 +139,8 @@ class Trainer:
 
 
             #################################################################################
-            # with amp.scale_loss(loss_tot, optim) as scaled_loss:
-            #     scaled_loss.backward()
-            loss_tot.backward()
+            with amp.scale_loss(loss_tot, optim) as scaled_loss:
+                scaled_loss.backward()
             #################################################################################
 
             # xxx Regularizer (EWC, RW, PI)
