@@ -225,6 +225,10 @@ class Trainer:
         with torch.no_grad():
             for i, (images, labels) in enumerate(loader):
 
+                ##############################################
+                print(1)
+                ###############################################
+
                 images = images.to(device, dtype=torch.float32)
                 labels = labels.to(device, dtype=torch.long)
 
