@@ -98,7 +98,7 @@ def get_dataset(opts):
         val_dst = dataset(root=opts.data_root, train=False, transform=val_transform,
                           labels=list(labels), labels_old=list(labels_old),
                           idxs_path=path_base + f"/val-{opts.step}.npy",
-                          masking=not opts.no_mask, overlap=True, batch_size=opts.batch_size)
+                          masking=not opts.no_mask, overlap=True, batch_size=opts.batch_size, task=opts.task)
 
     image_set = 'train' if opts.val_on_trainset else 'val'
     ###################################################################################################

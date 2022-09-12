@@ -105,6 +105,7 @@ class VOCSegmentation(data.Dataset):
 class VOCSegmentationIncremental(data.Dataset):
     def __init__(self,
                  root,
+                 task,
                  train=True,
                  transform=None,
                  labels=None,
@@ -115,8 +116,7 @@ class VOCSegmentationIncremental(data.Dataset):
                  step=0,
                  few_shot=False,
                  num_shot=5,
-                 batch_size=24,
-                 task='15-1-split3'):
+                 batch_size=24):
 
         full_voc = VOCSegmentation(root, 'train' if train else 'val', is_aug=True, transform=None)
 

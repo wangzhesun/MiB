@@ -205,14 +205,14 @@ class AdeSegmentation(data.Dataset):
 class AdeSegmentationIncremental(data.Dataset):
     def __init__(self,
                  root,
+                 task='100-50',
                  train=True,
                  transform=None,
                  labels=None,
                  labels_old=None,
                  idxs_path=None,
                  masking=True,
-                 overlap=True,
-                 task='100-50'):
+                 overlap=True):
 
         full_data = AdeSegmentation(root, train)
 

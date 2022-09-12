@@ -41,6 +41,7 @@ cfg = {'DATASET': {
 class COCOSegmentationIncremental(data.Dataset):
     def __init__(self,
                  root,
+                 task,
                  train=True,
                  transform=None,
                  labels=None,
@@ -51,8 +52,7 @@ class COCOSegmentationIncremental(data.Dataset):
                  step=0,
                  few_shot=False,
                  num_shot=5,
-                 batch_size=24,
-                 task='split3'):
+                 batch_size=24):
 
         COCO_PATH = os.path.join(root, "COCO2017")
         folding = 3
