@@ -29,6 +29,7 @@ cfg = {'DATASET': {
                 },
                 'TEST': {
                     'transforms': ('normalize', ),
+                    'joint_transforms': ('joint_random_scale_crop', 'joint_random_horizontal_flip'),
                     'TRANSFORMS_DETAILS': {
                         'NORMALIZE': {
                             'mean': (0.485, 0.456, 0.406),
