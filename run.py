@@ -201,6 +201,20 @@ def main(opts):
     # print(torch.min(train_dst[5][1]))
     # print(train_dst[0][1].is_cuda)
     ##################################################################################
+    ##################################################################################
+    print('\n printing max and min index 0 and 1 test image: ')
+    print(test_dst[0][0].size())
+    print(test_dst[1][0].size())
+    print(torch.max(test_dst[0][0]))
+    print(torch.min(test_dst[0][0]))
+    print(test_dst[0][0].is_cuda)
+    print('\n printing max and min index 0 and 1 test label: ')
+    print(test_dst[0][1].size())
+    print(test_dst[1][1].size())
+    print(torch.max(test_dst[0][1]))
+    print(torch.min(test_dst[0][1]))
+    print(test_dst[0][1].is_cuda)
+    ##################################################################################
 
 
 
