@@ -213,8 +213,8 @@ def main(opts):
     print('\n printing max and min index 0 and 1 test label: ')
     print(test_dst[0][1].size())
     print(test_dst[1][1].size())
-    print(torch.max(test_dst[:][1]))
-    print(torch.min(test_dst[:][1]))
+    print(torch.max(test_dst[17][1]))
+    print(torch.min(test_dst[17][1]))
     print(test_dst[0][1].is_cuda)
     ##################################################################################
 
