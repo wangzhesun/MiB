@@ -147,11 +147,8 @@ class Trainer:
             # xxx first backprop of previous loss (compute the gradients for regularization methods)
             loss_tot = loss + lkd + lde + l_icarl
 
-
-            #################################################################################
             with amp.scale_loss(loss_tot, optim) as scaled_loss:
                 scaled_loss.backward()
-            #################################################################################
 
             # xxx Regularizer (EWC, RW, PI)
             if self.regularizer_flag:
@@ -184,7 +181,7 @@ class Trainer:
                 interval_loss = 0.0
 
             #######################################################
-            break
+            # break
             #######################################################
 
 ##############################################################################
