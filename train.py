@@ -226,7 +226,7 @@ class Trainer:
             for i, (images, labels) in enumerate(loader):
 
                 ##############################################
-                print(1)
+                # print(1)
                 ###############################################
 
                 images = images.to(device, dtype=torch.float32)
