@@ -116,7 +116,8 @@ class VOCSegmentationIncremental(data.Dataset):
                  step=0,
                  few_shot=False,
                  num_shot=5,
-                 batch_size=24):
+                 batch_size=24,
+                 folding=3):
 
         full_voc = VOCSegmentation(root, 'train' if train else 'val', is_aug=True, transform=None)
 

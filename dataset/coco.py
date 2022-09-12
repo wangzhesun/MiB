@@ -52,10 +52,10 @@ class COCOSegmentationIncremental(data.Dataset):
                  step=0,
                  few_shot=False,
                  num_shot=5,
-                 batch_size=24):
+                 batch_size=24,
+                 folding=3):
 
         COCO_PATH = os.path.join(root, "COCO2017")
-        folding = 3
         labels, labels_old, path_base = tasks.get_task_labels('coco', name=task, step=step)
 
         if step == 0:

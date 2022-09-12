@@ -60,6 +60,8 @@ def get_argparser():
                         choices=['voc', 'ade', 'coco'], help='Name of dataset')
     parser.add_argument("--num_classes", type=int, default=None,
                         help="num classes (default: None)")
+    parser.add_argument("--folding", type=int, default=3,
+                        help='folding number (default: 3)')
 
     # Method Options
     # BE CAREFUL USING THIS, THEY WILL OVERRIDE ALL THE OTHER PARAMETERS.

@@ -88,7 +88,7 @@ def get_dataset(opts):
                         labels=list(labels), labels_old=list(labels_old),
                         idxs_path=path_base + f"/train-{opts.step}.npy",
                         masking=not opts.no_mask, overlap=opts.overlap, step=opts.step, few_shot=opts.few_shot,
-                        num_shot=opts.num_shot, batch_size=opts.batch_size, task=opts.task)
+                        num_shot=opts.num_shot, batch_size=opts.batch_size, task=opts.task, folding=opts.folding)
 
     if not opts.no_cross_val:  # if opts.cross_val:
         train_len = int(0.8 * len(train_dst))
@@ -98,14 +98,14 @@ def get_dataset(opts):
         val_dst = dataset(root=opts.data_root, train=False, transform=val_transform,
                           labels=list(labels), labels_old=list(labels_old),
                           idxs_path=path_base + f"/val-{opts.step}.npy",
-                          masking=not opts.no_mask, overlap=True, batch_size=opts.batch_size, task=opts.task)
+                          masking=not opts.no_mask, overlap=True, batch_size=opts.batch_size, task=opts.task, folding=opts.folding)
 
     image_set = 'train' if opts.val_on_trainset else 'val'
     ###################################################################################################
     test_dst = dataset(root=opts.data_root, train=opts.val_on_trainset, transform=val_transform,
                        labels=list(labels_cum),
                        idxs_path=path_base + f"/test_on_{image_set}-{opts.step}.npy",
-                       batch_size=opts.batch_size)
+                       batch_size=opts.batch_size, task=opts.task, folding=opts.folding)
     # labels_test = list(range(21))
     # test_dst = dataset(root=opts.data_root, train=opts.val_on_trainset, transform=val_transform,
     #                    labels=list(labels_test),
